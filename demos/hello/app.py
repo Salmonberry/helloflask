@@ -10,6 +10,8 @@ from flask import Flask
 
 app = Flask(__name__)
 
+print(__name__);
+
 
 # the minimal Flask application
 @app.route('/')
@@ -32,7 +34,7 @@ def greet(name):
 
 
 # custom flask cli command
-@app.cli.command()
+@app.cli.command('say-hello')
 def hello():
     """Just say hello."""
     click.echo('Hello, Human!')
