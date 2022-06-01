@@ -6,6 +6,7 @@
     :license: MIT, see LICENSE for more details.
 """
 import os
+
 try:
     from urlparse import urlparse, urljoin
 except ImportError:

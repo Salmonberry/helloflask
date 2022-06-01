@@ -5,8 +5,10 @@
     :copyright: © 2018 Grey Li
     :license: MIT, see LICENSE for more details.
 """
+from os import abort
+
 import click
-from flask import Flask
+from flask import Flask, redirect, url_for, make_response, json, jsonify
 
 app = Flask(__name__)
 
@@ -21,9 +23,16 @@ def index():
 
 # bind multiple URL for one view function
 @app.route('/hi')
-@app.route('/hello')
+# @app.route('/hello')
 def say_hello():
     return '<h1>Hello, Flask!</h1>'
+
+
+@app.route('/hello')
+def hello():
+    # return '<h1>Hello, Flask!</h1>'
+    # return '', 302, {'Location': 'https://www.bilibili.com/'}
+    return redirect(url_for('say_hello'))
 
 
 # dynamic route, URL variable default
@@ -38,3 +47,28 @@ def greet(name):
 def hello():
     """Just say hello."""
     click.echo('Hello, Human!')
+
+
+@app.route('/404')
+def not_found():
+    abort(404)
+
+
+@app.route('/foo')
+def foo():
+    data = {
+        'name': 'Grey Li',
+        'gender': 'male'
+    }
+    # response = make_response(json.dumps(data))
+    # response.mimetype = 'application/json'
+    # return response
+    # return jsonify(name='Grey Li01', gender='male01')
+    return jsonify(message='Error!'), 500
+
+
+@app.route('/set/<name>')
+def set_cookie(name):
+    response = make_response(redirect(url_for('hello')))
+    response.set_cookie('name', name)
+    return response
